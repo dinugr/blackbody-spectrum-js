@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Suhu Warna</title>
+    <style>
+      html,
+      body {
+        font-family: monospace;
+        margin: 0;
+      }
+
+      #wrapper {
+        margin: auto;
+        max-width: 600px;
+      }
+
+      .colorstick {
+        overflow: hidden;
+      }
+
+      .colorstick-wrapper {
+        display: flex;
+        font-family: monospace;
+        flex: 1;
+      }
+      
+      .colorstick-item {
+        height: 30px;
+        flex: 1;
+      }
+
+      #sliderpreview {
+        height: 50px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #sliderpreview .approx {
+        background-color: #0000005e;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+      }
+
+      #slider {
+        width: 100%;
+      }
+    </style>
+    <script type="text/javascript" src="spectra.js"></script>
+    <script type="text/javascript" src="colorstick.js"></script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <h1>Playground Suhu Warna</h1>
+
+      <div id="sliderpreview"></div>
+      <input id="slider" type="range" min="1000" max="10000" value="6500" />
+      <div id="boxwrapper"></div>
+    </div>
+
+    <script>
+      (function () {
+        var slider = document.getElementById("slider")
+        var sliderpreview = document.getElementById("sliderpreview")
+
+        function onSlide(value) {
+          var color = generateColorTemp(parseInt(value))
+
+          sliderpreview.style.backgroundColor = rgb2Hex(
+            color.r,
+            color.g,
+            color.b
+          )
+          if (color.approximation) {
+            sliderpreview.innerHTML =
+              '<span class="approx">' + value + " K (approximation)</span>"
+          } else {
+            sliderpreview.innerHTML =
+              '<span class="approx">' + value + " K</span>"
+          }
+        }
+        slider.oninput = function () {
+          onSlide(this.value)
+        }
+        onSlide(slider.value)
+
+        var target = document.getElementById("boxwrapper")
+
+        var a = colorstick("SMPTE (default)", (t) => generateColorTemp(t), 10)
+        target.appendChild(a)
+        var b = colorstick("NTSC", (t) => generateColorTemp(t, ColourSystem.NTSC), 10)
+        target.appendChild(b)
+        var c = colorstick( "EBU (PAL/SECAM)", (t) => generateColorTemp(t, ColourSystem.EBU), 10)
+        target.appendChild(c)
+        var d = colorstick( "HDTV", (t) => generateColorTemp(t, ColourSystem.HDTV), 10)
+        target.appendChild(d)
+        var e = colorstick( "CIE", (t) => generateColorTemp(t, ColourSystem.CIE), 10)
+        target.appendChild(e)
+        var f = colorstick( "Rec709", (t) => generateColorTemp(t, ColourSystem.Rec709), 10)
+        target.appendChild(f)
+
+      })()
+    </script>
+  </body>
+</html>
