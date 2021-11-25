@@ -1,3 +1,5 @@
+![Preview](preview.png)
+
 Javascript version of "[Colour Rendering of Spectra](https://www.fourmilab.ch/documents/specrend/)"
 
 ## How To
